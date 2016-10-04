@@ -1,0 +1,476 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="20151123-1" author="coki">
+        <sql>update sys_menu set del_flag = 1 where id = '62';</sql>
+        <comment>在线办公 内容隐藏</comment>
+    </changeSet>
+    <changeSet id="20151123-2" author="coki">
+        <sql>update sys_menu set del_flag = 1 where id = '31';</sql>
+        <comment>内容管理 内容隐藏</comment>
+    </changeSet>
+    <changeSet id="20151123-3" author="coki">
+        <sql>update sys_menu set del_flag = 1 where id = '67';</sql>
+        <comment>系统设置 >> 日志查询 内容隐藏</comment>
+    </changeSet>
+    <changeSet id="20151125-5" author="coki">
+        <sql>delete from sys_menu where id not in ('1','27','28','29','30','2','3','13','20','21','22','4','5','6','7','8','9','10','11','12');</sql>
+        <comment>菜单维护</comment>
+    </changeSet>
+    <changeSet id="20151125-2" author="coki">
+        <sql>delete from sys_dict where type not like '%sys%';</sql>
+        <comment>字典维护</comment>
+    </changeSet>
+    <changeSet id="20151125-3" author="coki">
+        <sql>delete from sys_role where id not in ('1','2');</sql>
+        <comment>角色维护</comment>
+    </changeSet>
+    <changeSet id="20160309-1" author="coki">
+        <addColumn tableName="sys_user">
+            <column name="position" type="varchar(100)" remarks="职位"/>
+        </addColumn>
+        <comment>修改user表结构</comment>
+    </changeSet>
+    <changeSet id="20160309-2" author="coki">
+        <addColumn tableName="sys_user">
+            <column name="dept_abb" type="varchar(100)" remarks="部门缩写"/>
+            <column name="dept" type="varchar(100)" remarks="部门名称"/>
+            <column name="work_place" type="varchar(100)" remarks="工作地"/>
+            <column name="work_date" type="date" remarks="入职年月"/>
+            <column name="birth_date" type="date" remarks="出生年月"/>
+            <column name="sdll" type="varchar(3)" remarks="善的力量"/>
+            <column name="jcfwj" type="varchar(3)" remarks="坚持服务奖"/>
+            <column name="rxjg" type="varchar(3)" remarks="如新家规"/>
+            <column name="rxxw" type="varchar(3)" remarks="如新新闻"/>
+            <column name="dzhbmjs" type="varchar(3)" remarks="大中华部门介绍"/>
+            <column name="hdjy" type="varchar(3)" remarks="家园活动"/>
+            <column name="jdz" type="varchar(3)" remarks="金点子"/>
+            <column name="wjdc" type="varchar(3)" remarks="问卷调查 "/>
+            <column name="jhgjt" type="varchar(3)" remarks="家辉哥讲堂"/>
+            <column name="rxxqgs" type="varchar(3)" remarks="如新心情故事 "/>
+            <column name="yhrx" type="varchar(3)" remarks="悦活如新 "/>
+            <column name="qym" type="varchar(3)" remarks="企业梦 "/>
+            <column name="srzf" type="varchar(3)" remarks="生日祝福 "/>
+            <column name="ctxx" type="varchar(3)" remarks="餐厅信息 "/>
+            <column name="gajyz" type="varchar(3)" remarks="关爱加油站  "/>
+            <column name="bcxx" type="varchar(3)" remarks="班车信息 "/>
+            <column name="jrzzxt" type="varchar(3)" remarks="家人自助系统 "/>
+            <column name="jszx" type="varchar(3)" remarks="健身中心"/>
+        </addColumn>
+        <comment>修改user表结构</comment>
+    </changeSet>
+    <changeSet id="20160309-3" author="coki">
+        <addColumn tableName="sys_user">
+            <column name="is_back" type="varchar(3)" remarks="是否后台用户"/>
+        </addColumn>
+        <comment>修改user表结构</comment>
+    </changeSet>
+    <changeSet id="20160309-4" author="coki">
+        <addColumn tableName="sys_user">
+            <column name="role_names" type="varchar(200)" remarks="用户后台权限"/>
+        </addColumn>
+        <comment>修改user表结构</comment>
+    </changeSet>
+    <changeSet id="20160309-5" author="coki">
+        <addColumn tableName="sys_user">
+            <column name="english_name" type="varchar(100)" remarks="英文名称"/>
+        </addColumn>
+        <comment>修改user表结构</comment>
+    </changeSet>
+    <changeSet id="20160310-03" author="coki">
+        <createTable tableName="rx_sys_user_modify" remarks="用户修改记录表">
+            <column name="id" type="varchar(64)" remarks="表ID"/>
+            <column name="create_by" type="varchar(64)" remarks="创建ID"/>
+            <column name="create_date" type="datetime" remarks="创建时间"/>
+            <column name="update_by" type="varchar(64)" remarks="更新ID"/>
+            <column name="update_date" type="datetime" remarks="更新时间"/>
+            <column name="login_name" type="varchar(100)" remarks="登录名"/>
+            <column name="password" type="varchar(100)" remarks="密码"/>
+            <column name="no" type="varchar(100)" remarks="工号"/>
+            <column name="name" type="varchar(100)" remarks="姓名"/>
+            <column name="email" type="varchar(100)" remarks="邮箱"/>
+            <column name="photo" type="varchar(100)" remarks="用户头像"/>
+            <column name="create_no" type="varchar(100)" remarks="创建者员工编号"/>
+            <column name="modify_type" type="varchar(10)" remarks="修改类型"/>
+            <column name="remarks" type="varchar(255)" remarks="备注信息"/>
+            <column name="del_flag" type="char(1)" remarks="删除标记"/>
+            <column name="english_name" type="varchar(100)" remarks="英文名称"/>
+            <column name="position" type="varchar(100)" remarks="职位"/>
+            <column name="dept_abb" type="varchar(100)" remarks="部门缩写"/>
+            <column name="dept" type="varchar(100)" remarks="部门名称"/>
+            <column name="work_place" type="varchar(100)" remarks="工作地"/>
+            <column name="work_date" type="date" remarks="入职年月"/>
+            <column name="birth_date" type="date" remarks="出生年月"/>
+            <column name="sdll" type="varchar(3)" remarks="善的力量"/>
+            <column name="jcfwj" type="varchar(3)" remarks="坚持服务奖"/>
+            <column name="rxjg" type="varchar(3)" remarks="如新家规"/>
+            <column name="rxxw" type="varchar(3)" remarks="如新新闻"/>
+            <column name="dzhbmjs" type="varchar(3)" remarks="大中华部门介绍"/>
+            <column name="hdjy" type="varchar(3)" remarks="家园活动"/>
+            <column name="jdz" type="varchar(3)" remarks="金点子"/>
+            <column name="wjdc" type="varchar(3)" remarks="问卷调查 "/>
+            <column name="jhgjt" type="varchar(3)" remarks="家辉哥讲堂"/>
+            <column name="rxxqgs" type="varchar(3)" remarks="如新心情故事 "/>
+            <column name="yhrx" type="varchar(3)" remarks="悦活如新 "/>
+            <column name="qym" type="varchar(3)" remarks="企业梦 "/>
+            <column name="srzf" type="varchar(3)" remarks="生日祝福 "/>
+            <column name="ctxx" type="varchar(3)" remarks="餐厅信息 "/>
+            <column name="gajyz" type="varchar(3)" remarks="关爱加油站  "/>
+            <column name="bcxx" type="varchar(3)" remarks="班车信息 "/>
+            <column name="jrzzxt" type="varchar(3)" remarks="家人自助系统 "/>
+            <column name="jszx" type="varchar(3)" remarks="健身中心"/>
+            <column name="is_back" type="varchar(3)" remarks="是否后台用户"/>
+            <column name="role_names" type="varchar(200)" remarks="用户后台权限"/>
+        </createTable>
+        <comment>文章类型表结构</comment>
+    </changeSet>
+    <changeSet id="20160315-01" author="coki">
+        <createTable tableName="rx_doc_infos" remarks="文章类型表结构">
+            <column name="id" type="varchar(64)" remarks="表ID"/>
+            <column name="create_by" type="varchar(64)" remarks="创建ID"/>
+            <column name="create_date" type="datetime" remarks="创建时间"/>
+            <column name="update_by" type="varchar(64)" remarks="更新ID"/>
+            <column name="update_date" type="datetime" remarks="更新时间"/>
+            <column name="area" type="varchar(64)" remarks="地区"/>
+            <column name="title" type="varchar(200)" remarks="标题"/>
+            <column name="key_search" type="varchar(200)" remarks="查询关键字"/>
+            <column name="cover_pic" type="varchar(200)" remarks="封面图片"/>
+            <column name="is_notice" type="varchar(3)" remarks="是否添加到首页通告"/>
+            <column name="content" type="varchar(500)" remarks="内容"/>
+        </createTable>
+        <comment>文章类型表结构</comment>
+    </changeSet>
+    <changeSet id="20160315-02" author="coki">
+        <addColumn tableName="rx_doc_infos">
+            <column name="type" type="varchar(5)" remarks="消息类型"/>
+        </addColumn>
+        <comment>修改user表结构</comment>
+    </changeSet>
+    <changeSet id="20160315-03" author="coki">
+        <addColumn tableName="rx_doc_infos">
+            <column name="dept" type="varchar(20)" remarks="部门"/>
+        </addColumn>
+        <comment>修改rx_doc_infos表结构</comment>
+    </changeSet>
+    <changeSet id="20160315-04" author="coki">
+        <createTable tableName="rx_dzh_dept" remarks="大中华部门表结构">
+            <column name="id" type="varchar(64)" remarks="表ID"/>
+            <column name="create_by" type="varchar(64)" remarks="创建ID"/>
+            <column name="create_date" type="datetime" remarks="创建时间"/>
+            <column name="update_by" type="varchar(64)" remarks="更新ID"/>
+            <column name="update_date" type="datetime" remarks="更新时间"/>
+            <column name="name" type="varchar(64)" remarks="部门中午名"/>
+            <column name="english_name" type="varchar(30)" remarks="部门英文名"/>
+            <column name="content" type="varchar(500)" remarks="内容"/>
+        </createTable>
+        <comment>大中华部门表结构</comment>
+    </changeSet>
+    <changeSet id="20160315-05" author="coki">
+        <modifyDataType tableName="rx_doc_infos" columnName="content" newDataType="varchar(MAX)"/>
+        <comment>修改rx_doc_infos表结构</comment>
+    </changeSet>
+    <changeSet id="20160316-01" author="coki">
+        <createTable tableName="rx_activity" remarks="活动管理表结构">
+            <column name="id" type="varchar(64)" remarks="表ID"/>
+            <column name="create_by" type="varchar(64)" remarks="创建ID"/>
+            <column name="create_date" type="datetime" remarks="创建时间"/>
+            <column name="update_by" type="varchar(64)" remarks="更新ID"/>
+            <column name="update_date" type="datetime" remarks="更新时间"/>
+            <column name="type" type="varchar(64)" remarks="活动类型"/>
+            <column name="name" type="varchar(30)" remarks="活动名称"/>
+            <column name="date" type="date" remarks="活动日期"/>
+            <column name="start_time" type="time" remarks="活动开始时间"/>
+            <column name="end_time" type="time" remarks="活动结束日期"/>
+            <column name="big_banner" type="varchar(64)" remarks="活动大banner"/>
+            <column name="small_banner" type="varchar(64)" remarks="活动小banner"/>
+            <column name="is_show_page" type="varchar(3)" remarks="是否在活动家园首页显示"/>
+            <column name="is_open_register" type="varchar(64)" remarks="是否开放报名"/>
+            <column name="introduce" type="varchar(500)" remarks="活动介绍"/>
+        </createTable>
+        <comment>活动管理表结构</comment>
+    </changeSet>
+    <changeSet id="20160316-02" author="coki">
+        <modifyDataType tableName="rx_activity" columnName="start_time" newDataType="varchar(10)"/>
+        <modifyDataType tableName="rx_activity" columnName="end_time" newDataType="varchar(10)"/>
+        <comment>修改rx_activity表结构</comment>
+    </changeSet>
+    <changeSet id="20160316-03" author="coki">
+        <createTable tableName="rx_activity_review" remarks="精彩回顾表结构">
+            <column name="id" type="varchar(64)" remarks="表ID"/>
+            <column name="create_by" type="varchar(64)" remarks="创建ID"/>
+            <column name="create_date" type="datetime" remarks="创建时间"/>
+            <column name="update_by" type="varchar(64)" remarks="更新ID"/>
+            <column name="update_date" type="datetime" remarks="更新时间"/>
+            <column name="rx_activity_id" type="varchar(64)" remarks="活动管理表ID"/>
+            <column name="title" type="varchar(64)" remarks="精彩回顾标题"/>
+            <column name="pic" type="varchar(64)" remarks="精彩回顾图片"/>
+            <column name="introduce" type="varchar(500)" remarks="回顾介绍"/>
+        </createTable>
+        <comment>活动管理表结构</comment>
+    </changeSet>
+    <changeSet id="20160316-04" author="coki">
+        <addColumn tableName="rx_activity">
+            <column name="is_only_activity_review" type="varchar(3)" remarks="是否只是精彩回顾类型的活动"/>
+        </addColumn>
+        <comment>修改rx_activity表结构</comment>
+    </changeSet>
+    <changeSet id="20160317-01" author="coki">
+        <addColumn tableName="rx_activity_review">
+            <column name="type" type="varchar(3)" remarks="活动类型"/>
+            <column name="rx_activity_name" type="varchar(64)" remarks="精彩回顾名称"/>
+        </addColumn>
+        <comment>修改rx_activity_review表结构</comment>
+    </changeSet>
+    <changeSet id="20160317-02" author="coki">
+        <addColumn tableName="rx_doc_infos">
+            <column name="author" type="varchar(20)" remarks="作者"/>
+        </addColumn>
+        <comment>修改rx_doc_infos表结构</comment>
+    </changeSet>
+    <changeSet id="20160318-01" author="coki">
+        <createTable tableName="rx_url" remarks="url配置表结构">
+            <column name="id" type="varchar(64)" remarks="表ID"/>
+            <column name="create_by" type="varchar(64)" remarks="创建ID"/>
+            <column name="create_date" type="datetime" remarks="创建时间"/>
+            <column name="update_by" type="varchar(64)" remarks="更新ID"/>
+            <column name="update_date" type="datetime" remarks="更新时间"/>
+            <column name="code" type="varchar(20)" remarks="名称编码"/>
+            <column name="name" type="varchar(20)" remarks="链接名称"/>
+            <column name="url" type="varchar(40)" remarks="url链接"/>
+        </createTable>
+        <comment>金点子表结构</comment>
+    </changeSet>
+    <changeSet id="20160324-01" author="coki">
+        <addColumn tableName="rx_doc_infos">
+            <column name="area_code" type="varchar(10)" remarks="地区编码"/>
+        </addColumn>
+        <comment>修改rx_doc_infos表结构</comment>
+    </changeSet>
+    <changeSet id="20160328-01" author="coki">
+        <createTable tableName="rx_activity_join" remarks="活动报名表结构">
+            <column name="id" type="varchar(64)" remarks="表ID"/>
+            <column name="create_date" type="datetime" remarks="创建时间"/>
+            <column name="activity_id" type="varchar(64)" remarks="活动ID"/>
+            <column name="activity_name" type="varchar(30)" remarks="活动名称"/>
+            <column name="user_id" type="varchar(64)" remarks="报名人ID"/>
+            <column name="user_name" type="varchar(30)" remarks="报名人中文名"/>
+            <column name="user_english_name" type="varchar(30)" remarks="报名人英文名"/>
+        </createTable>
+        <comment>活动报名表结构</comment>
+    </changeSet>
+    <changeSet id="20160328-06" author="coki">
+        <createTable tableName="rx_activity_like" remarks="活动点赞表结构">
+            <column name="id" type="varchar(64)" remarks="表ID"/>
+            <column name="create_date" type="datetime" remarks="创建时间"/>
+            <column name="activity_id" type="varchar(64)" remarks="活动ID"/>
+            <column name="activity_name" type="varchar(30)" remarks="活动名称"/>
+            <column name="user_id" type="varchar(64)" remarks="点赞人ID"/>
+            <column name="user_name" type="varchar(30)" remarks="点赞人中文名"/>
+            <column name="user_english_name" type="varchar(30)" remarks="点赞人英文名"/>
+        </createTable>
+        <comment>活动点赞表结构</comment>
+    </changeSet>
+    <changeSet id="20160328-05" author="coki">
+        <createTable tableName="rx_activity_content" remarks="活动留言表结构">
+            <column name="id" type="varchar(64)" remarks="表ID"/>
+            <column name="create_date" type="datetime" remarks="创建时间"/>
+            <column name="activity_id" type="varchar(64)" remarks="活动ID"/>
+            <column name="activity_name" type="varchar(30)" remarks="活动名称"/>
+            <column name="user_id" type="varchar(64)" remarks="留言人ID"/>
+            <column name="user_name_back" type="varchar(30)" remarks="留言人中文名后台"/>
+            <column name="user_english_name_back" type="varchar(30)" remarks="留言人英文名后台"/>
+            <column name="user_name_front" type="varchar(30)" remarks="留言人中文名前台"/>
+            <column name="user_english_name_front" type="varchar(30)" remarks="留言人英文名前台"/>
+            <column name="content" type="varchar(200)" remarks="留言内容"/>
+        </createTable>
+        <comment>活动留言表结构</comment>
+    </changeSet>
+    <changeSet id="20160330-01" author="coki">
+        <createTable tableName="rx_home_activity_review" remarks="首页精彩回顾">
+            <column name="id" type="varchar(64)" remarks="表ID"/>
+            <column name="create_by" type="varchar(64)" remarks="创建ID"/>
+            <column name="create_date" type="datetime" remarks="创建时间"/>
+            <column name="update_by" type="varchar(64)" remarks="更新ID"/>
+            <column name="update_date" type="datetime" remarks="更新时间"/>
+            <column name="activity_review_id" type="varchar(64)" remarks="精彩回顾ID"/>
+            <column name="pic" type="varchar(200)" remarks="图片"/>
+        </createTable>
+        <comment>首页精彩回顾表结构</comment>
+    </changeSet>
+    <changeSet id="20160330-02" author="coki">
+        <addColumn tableName="rx_home_activity_review">
+            <column name="name" type="varchar(20)" remarks="首页精彩回顾名称"/>
+            <column name="activity_review_title" type="varchar(64)" remarks="精彩回顾标题"/>
+        </addColumn>
+        <comment>修改rx_doc_infos表结构</comment>
+    </changeSet>
+    <changeSet id="20160330-03" author="coki">
+        <addColumn tableName="rx_home_activity_review">
+            <column name="type" type="varchar(5)" remarks="精彩回顾类型"/>
+        </addColumn>
+        <comment>修改rx_doc_infos表结构</comment>
+    </changeSet>
+    <changeSet id="20160331-05" author="coki">
+        <createTable tableName="rx_good_idea" remarks="金点子表结构">
+            <column name="id" type="varchar(64)" remarks="表ID"/>
+            <column name="create_by" type="varchar(64)" remarks="创建ID"/>
+            <column name="create_date" type="datetime" remarks="创建时间"/>
+            <column name="update_by" type="varchar(64)" remarks="更新ID"/>
+            <column name="update_date" type="datetime" remarks="更新时间"/>
+            <column name="area" type="varchar(64)" remarks="地区"/>
+            <column name="author_id" type="varchar(20)" remarks="作者ID"/>
+            <column name="author_english_name" type="varchar(20)" remarks="作者英文名"/>
+            <column name="author_dept" type="varchar(20)" remarks="作者部门"/>
+            <!-- 投票数默认为0 -->
+            <column name="vote_num" type="int" remarks="投票数"/>
+            <column name="title" type="varchar(50)" remarks="金点子名称"/>
+            <column name="background" type="varchar(MAX)" remarks="项目背景"/>
+            <column name="proposal" type="varchar(MAX)" remarks="具体执行方案"/>
+            <column name="merit" type="varchar(MAX)" remarks="优点总结"/>
+            <column name="proposal_run_dept" type="varchar(50)" remarks="建议执行部门"/>
+            <column name="accessory" type="varchar(50)" remarks="附件"/>
+            <column name="awards" type="varchar(50)" remarks="获得奖项"/>
+            <column name="awards_year" type="varchar(4)" remarks="获得奖项年份"/>
+            <column name="awards_jidu" type="varchar(3)" remarks="获得奖项季度"/>
+            <column name="author_name" type="varchar(10)" remarks="作者中文名"/>
+        </createTable>
+        <comment>金点子表结构</comment>
+    </changeSet>
+    <changeSet id="20160331-04" author="coki">
+        <modifyDataType tableName="rx_doc_infos" columnName="content" newDataType="varchar(MAX)"/>
+        <comment>修改rx_doc_infos表结构</comment>
+    </changeSet>
+    <changeSet id="20160331-06" author="coki">
+        <modifyDataType tableName="rx_dzh_dept" columnName="content" newDataType="varchar(MAX)"/>
+        <comment>修改rx_doc_infos表结构</comment>
+    </changeSet>
+    <changeSet id="20160331-07" author="coki">
+        <modifyDataType tableName="rx_activity" columnName="introduce" newDataType="varchar(MAX)"/>
+        <comment>修改rx_doc_infos表结构</comment>
+    </changeSet>
+    <changeSet id="20160331-08" author="coki">
+        <modifyDataType tableName="rx_activity_review" columnName="introduce" newDataType="varchar(MAX)"/>
+        <comment>修改rx_doc_infos表结构</comment>
+    </changeSet>
+    <changeSet id="20160401-01" author="coki">
+        <createTable tableName="rx_good_idea_vote" remarks="金点子投票表结构">
+            <column name="id" type="varchar(64)" remarks="表ID"/>
+            <column name="vote_id" type="varchar(20)" remarks="投票人ID"/>
+            <column name="vote_english_name" type="varchar(20)" remarks="投票人英文名"/>
+            <column name="vote_name" type="varchar(10)" remarks="投票人中文名"/>
+            <column name="vote_dept" type="varchar(20)" remarks="投票人部门"/>
+            <column name="good_idea_title" type="varchar(50)" remarks="金点子名称"/>
+            <column name="good_idea_id" type="varchar(64)" remarks="金点子id"/>
+        </createTable>
+        <comment>金点子投票表结构</comment>
+    </changeSet>
+    <changeSet id="20160330-04" author="coki">
+        <addColumn tableName="rx_good_idea_vote">
+            <column name="vote_no" type="varchar(5)" remarks="投票人编号"/>
+        </addColumn>
+        <comment>修改rx_doc_infos表结构</comment>
+    </changeSet>
+    <changeSet id="20160405-1" author="coki">
+        <addColumn tableName="rx_doc_infos">
+            <column name="big_title" type="varchar(max)" remarks="大标题"/>
+        </addColumn>
+        <comment>修改user表结构</comment>
+    </changeSet>
+    <changeSet id="20160405-2" author="coki">
+        <addColumn tableName="rx_activity">
+            <column name="date_end" type="date" remarks="活动结束日期"/>
+        </addColumn>
+        <comment>修改user表结构</comment>
+    </changeSet>
+    <changeSet id="20160405-3" author="coki">
+        <addColumn tableName="rx_activity_join">
+            <column name="user_no" type="varchar(50)" remarks="报名人员工号"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20160405-4" author="coki">
+        <addColumn tableName="rx_activity_like">
+            <column name="user_no" type="varchar(50)" remarks="点赞人员工号"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20160405-5" author="coki">
+        <addColumn tableName="rx_activity_content">
+            <column name="user_no" type="varchar(50)" remarks="留言员工号"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20160406-1" author="coki">
+        <addColumn tableName="rx_good_idea">
+            <column name="accessory_name" type="varchar(50)" remarks="附件名称"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20160406-3" author="coki">
+        <addColumn tableName="rx_activity_review">
+            <column name="activity_review_year" type="varchar(4)" remarks="精彩回顾年份"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20160406-4" author="coki">
+        <addColumn tableName="rx_good_idea_vote">
+            <column name="vote_date" type="datetime" remarks="投票时间"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20160406-5" author="coki">
+        <modifyDataType tableName="rx_good_idea" columnName="awards_jidu" newDataType="varchar(10)"/>
+    </changeSet>
+    <changeSet id="20160407-1" author="coki">
+        <createTable tableName="rx_front_permission" remarks="前台权限表">
+            <column name="id" type="varchar(64)" remarks="表ID"/>
+            <column name="user_id" type="varchar(64)" remarks="用户ID"/>
+            <column name="permission" type="varchar(10)" remarks="前台权限"/>
+        </createTable>
+        <comment>前台权限表</comment>
+    </changeSet>
+    <changeSet id="20160407-2" author="coki">
+        <addColumn tableName="rx_front_permission">
+            <column name="user_no" type="varchar(64)" remarks="用户编号"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20160408-1" author="coki">
+        <addColumn tableName="rx_activity">
+            <column name="registration_deadline" type="datetime" remarks="报名截止日"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20160411-1" author="coki">
+        <addColumn tableName="rx_activity_content">
+            <column name="user_photo" type="varchar(500)" remarks="用户头像"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20160411-2" author="coki">
+        <addColumn tableName="sys_user">
+            <column name="user_level" type="varchar(10)" remarks="用户级别"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20160411-4" author="coki">
+        <addColumn tableName="rx_good_idea">
+            <column name="is_allow_vote" type="varchar(3)" remarks="是否允许投票" defaultValue="0"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20160413-1" author="coki">
+        <addColumn tableName="rx_good_idea">
+            <column name="awards_jidu_code" type="varchar(3)" remarks="获得奖项季度编码"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20160414-1" author="coki">
+        <addColumn tableName="rx_sys_user_modify">
+            <column name="create_eglish_name" type="varchar(64)" remarks="创建者英文名称"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20160415-1" author="coki">
+        <addColumn tableName="rx_good_idea">
+            <column name="author_no" type="varchar(64)" remarks="作者员工编号"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20160419-1" author="coki">
+        <addColumn tableName="rx_activity">
+            <column name="is_show_on_list" type="varchar(3)" remarks="是否在活动家园列表显示"/>
+        </addColumn>
+    </changeSet>
+    
+    
+    
+</databaseChangeLog>

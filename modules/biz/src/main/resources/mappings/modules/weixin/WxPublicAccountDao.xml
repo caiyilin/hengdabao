@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.movitech.mbox.modules.weixin.dao.WxPublicAccountDao">
+    
+    <sql id="wxPublicAccountColumns">
+        a.id AS "id",
+        a.account_id AS "accountId",
+        a.account_name AS "accountName",
+        a.account_type AS "accountType",
+        a.account_desc AS "accountDesc",
+        a.qrcode AS "qrcode",
+        a.appid AS "appid",
+        a.appsecret AS "appsecret",
+        a.token AS "token",
+        a.aeskey AS "aeskey",
+        a.cdate AS "cdate",
+        a.creater AS "creater",
+        a.welcome_text AS "welcomeText"
+    </sql>
+    
+    <sql id="wxPublicAccountJoins">
+    </sql>
+    
+    <select id="get" resultType="WxPublicAccount">
+        SELECT 
+            <include refid="wxPublicAccountColumns"/>
+        FROM wx_public_account a
+        <include refid="wxPublicAccountJoins"/>
+        WHERE a.id = #{id}
+    </select>
+    
+    <select id="findList" resultType="WxPublicAccount">
+        SELECT 
+            <include refid="wxPublicAccountColumns"/>
+        FROM wx_public_account a
+        <include refid="wxPublicAccountJoins"/>
+        <where>
+            
+        </where>
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+    
+    <select id="findAllList" resultType="WxPublicAccount">
+        SELECT 
+            <include refid="wxPublicAccountColumns"/>
+        FROM wx_public_account a
+        <include refid="wxPublicAccountJoins"/>
+        <where>
+            
+        </where>        
+        <choose>
+            <when test="page !=null and page.orderBy != null and page.orderBy != ''">
+                ORDER BY ${page.orderBy}
+            </when>
+            <otherwise>
+            </otherwise>
+        </choose>
+    </select>
+    
+    <insert id="insert">
+        INSERT INTO wx_public_account(
+            id,
+            account_id,
+            account_name,
+            account_type,
+            account_desc,
+            qrcode,
+            appid,
+            appsecret,
+            token,
+            aeskey,
+            cdate,
+            creater,
+            welcome_text
+        ) VALUES (
+            #{id},
+            #{accountId},
+            #{accountName},
+            #{accountType},
+            #{accountDesc},
+            #{qrcode},
+            #{appid},
+            #{appsecret},
+            #{token},
+            #{aeskey},
+            #{cdate},
+            #{creater},
+            #{welcomeText}
+        )
+    </insert>
+    
+    <update id="update">
+        UPDATE wx_public_account SET     
+            account_id = #{accountId},
+            account_name = #{accountName},
+            account_type = #{accountType},
+            account_desc = #{accountDesc},
+            qrcode = #{qrcode},
+            appid = #{appid},
+            appsecret = #{appsecret},
+            token = #{token},
+            aeskey = #{aeskey},
+            cdate = #{cdate},
+            creater = #{creater},
+            welcome_text = #{welcomeText}
+        WHERE id = #{id}
+    </update>
+    
+    <update id="delete">
+        DELETE FROM wx_public_account
+        WHERE id = #{id}
+    </update>
+    
+    <select id="getByAccountId" resultType="WxPublicAccount">
+        SELECT 
+            <include refid="wxPublicAccountColumns"/>
+        FROM wx_public_account a
+        
+        WHERE a.account_id = #{accountId}
+    </select>
+    
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         version="2.5">
+
+
+    <!-- Context ConfigLocation -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath*:/spring-context*.xml</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- MVC Servlet -->
+    <servlet>
+        <servlet-name>springServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath*:/spring-mvc*.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>springServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+    
+    <!-- 需要获取用户信息，拦截请求去微信验证端获取用户信息 -->
+    <filter>
+        <filter-name>getWeiXinCode</filter-name>
+        <filter-class>com.movitech.web.filter.NeedUserInfoFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>getWeiXinCode</filter-name>
+        <url-pattern>/weixin/*</url-pattern>
+    </filter-mapping>
+    <!-- shiro安全机制 start -->
+    <filter>
+        <filter-name>shiroFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy
+        </filter-class>
+        <init-param>
+            <param-name>targetFilterLifecycle</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>shiroFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- shiro安全机制 end -->
+    
+    <!-- url解析，因为框架的问题url不是标准的spring mvc格式，所以把此类url转为标准格式start -->
+    <filter>
+        <filter-name>urlParse</filter-name>
+        <filter-class>com.movitech.web.filter.UrlParseFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>urlParse</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- url解析，因为框架的问题url不是标准的spring mvc格式，所以把此类url转为标准格式end -->
+
+    <!-- 测试放到本地服务器上，不放到文件服务器上面
+    <servlet>
+        <servlet-name>Upload</servlet-name>
+        <servlet-class>com.movitech.web.util.FileUploadServlet
+        </servlet-class>
+    </servlet>
+     -->
+    <servlet>
+        <servlet-name>Upload</servlet-name>
+        <servlet-class>com.movitech.web.util.UploadServlet
+        </servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Upload</servlet-name>
+        <url-pattern>/servlet/Upload</url-pattern>
+    </servlet-mapping>
+</web-app>

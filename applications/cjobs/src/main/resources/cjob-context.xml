@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="com.movitech.mbox.cjobs"/>
+
+    <!-- 加载配置属性文件 -->
+    <context:property-placeholder ignore-unresolvable="true" location="classpath:cjob.properties" />
+
+    <bean id="jobDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <!-- 数据源驱动类可不写，Druid默认会自动根据URL识别DriverClass -->
+        <property name="driverClassName" value="${jdbc.driver}" />
+
+        <!-- 基本属性 url、user、password -->
+        <property name="url" value="${job.jdbc.url}" />
+        <property name="username" value="${job.jdbc.username}" />
+        <property name="password" value="${job.jdbc.password}" />
+
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize" value="${job.jdbc.pool.init}" />
+        <property name="minIdle" value="${job.jdbc.pool.minIdle}" />
+        <property name="maxActive" value="${job.jdbc.pool.maxActive}" />
+
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait" value="60000" />
+
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+
+        <property name="validationQuery" value="${job.jdbc.testSql}" />
+        <property name="testWhileIdle" value="true" />
+        <property name="testOnBorrow" value="false" />
+        <property name="testOnReturn" value="false" />
+
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小（Oracle使用）
+        <property name="poolPreparedStatements" value="true" />
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="20" /> -->
+
+        <!-- 配置监控统计拦截的filters -->
+        <property name="filters" value="stat" />
+    </bean>
+
+    <!-- 分布式事务配置 start -->
+
+    <!-- 配置线程池-->
+    <bean name="executor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="15"/>
+        <property name="maxPoolSize" value="25"/>
+        <property name="queueCapacity" value="100"/>
+    </bean>
+
+    <bean name="jobTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="jobDataSource"/>
+    </bean>
+
+    <!-- 配置调度任务-->
+    <bean name="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="configLocation" value="classpath:quartz.properties"/>
+        <property name="dataSource" ref="jobDataSource"/>
+        <property name="transactionManager" ref="jobTransactionManager"/>
+
+        <!-- 任务唯一的名称，将会持久化到数据库-->
+        <property name="schedulerName" value="baseScheduler"/>
+
+        <!-- 每台集群机器部署应用的时候会更新触发器-->
+        <property name="overwriteExistingJobs" value="true"/>
+        <property name="applicationContextSchedulerContextKey" value="applicationContext"/>
+
+        <property name="jobFactory">
+            <bean class="com.movitech.mbox.cjobs.core.AutowiringSpringBeanJobFactory"/>
+        </property>
+
+        <property name="triggers">
+            <list>
+                <ref bean="demoTrigger"/>
+            </list>
+        </property>
+        <property name="jobDetails">
+            <list>
+                <ref bean="demoJob"/>
+            </list>
+        </property>
+
+        <property name="taskExecutor" ref="executor"/>
+
+    </bean>
+
+    <!-- 配置Job详情 -->
+    <bean name="demoJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="com.movitech.mbox.cjobs.tasks.demo.PrintCurrentTimeJobs"/>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="exeCount" value="2"/>
+            </map>
+        </property>
+        <property name="durability" value="true"/>
+        <property name="requestsRecovery" value="false"/>
+    </bean>
+
+    <!-- 配置触发时间 -->
+    <bean name="demoTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="demoJob"/>
+        <property name="name" value="demoTrigger"/>
+        <property name="group" value="demo"/>
+        <property name="cronExpression">
+            <value>0/10 * * * * ?</value>
+        </property>
+        <property name="timeZone">
+            <value>GMT+8:00</value>
+        </property>
+        <!--property name="misfireInstruction" >
+
+            MISFIRE_INSTRUCTION_FIRE_ONCE_NOW = 1;
+            MISFIRE_INSTRUCTION_DO_NOTHING = 2;
+
+            <value>1</value
+        </property>-->
+    </bean>
+
+    <!-- 分布式事务配置 end -->
+</beans>

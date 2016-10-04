@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+    <context:component-scan base-package = "com.movitech.web.controls"/>
+    <context:annotation-config />
+
+    <!--开启注解 -->
+    <mvc:annotation-driven/>
+
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                    <property name="supportedMediaTypes">
+                        <list>
+                            <value>text/html; charset=UTF-8</value>
+                            <value>application/json;charset=UTF-8</value>
+                        </list>
+                    </property>
+                </bean>
+                <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                    <property name="supportedMediaTypes">
+                        <list>
+                            <value>text/html; charset=UTF-8</value>
+                            <value>application/json;charset=UTF-8</value>
+                        </list>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+        <property name="alwaysUseFullPath" value="true"/>
+    </bean>
+
+    <!--定义Spring MVC 的模板文件 -->
+    <bean id="viewResolver1" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!--支持JSTL -->
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <!--模板的路径 -->
+        <property name="prefix" value="/WEB-INF/views/" />
+        <!--模板文件后缀 -->
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <!-- Spring MVC 文件上传配置 -->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+          p:defaultEncoding="utf-8">
+        <property name="maxUploadSize">
+            <value>10485760000</value>
+        </property>
+        <property name="maxInMemorySize">
+            <value>40960</value>
+        </property>
+    </bean>
+    
+    <!-- 静态资源加载 -->
+    <mvc:resources mapping="/assets/**" location="/assets/"/>
+    
+    <!-- 支持Shiro对Controller的方法级AOP安全控制 begin-->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
+        <property name="proxyTargetClass" value="true" />
+    </bean>
+    
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="org.apache.shiro.authz.UnauthorizedException">error/access_deny</prop>
+                <prop key="java.lang.Throwable">error/in_building</prop>
+            </props>
+            </property>
+    </bean>
+    <!-- 支持Shiro对Controller的方法级AOP安全控制 end -->
+</beans>
